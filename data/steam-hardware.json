@@ -1,0 +1,61 @@
+{
+  "devices": [
+    {
+      "name": "Steam Machine",
+      "available": false,
+      "status": "Coming H1 2026",
+      "isNew": true,
+      "message": "Valve's new compact living room PC. Semi-custom AMD Zen 4 CPU (6C/12T), RDNA 3 GPU (28 CUs), 16GB DDR5, 8GB VRAM. Targets 4K@60fps with FSR. 512GB or 2TB NVMe SSD options. Runs SteamOS 3.",
+      "specs": {
+        "cpu": "AMD Zen 4, 6C/12T, up to 4.8 GHz",
+        "gpu": "AMD RDNA 3, 28 CUs, 2.45 GHz",
+        "ram": "16 GB DDR5",
+        "vram": "8 GB GDDR6",
+        "storage": "512 GB / 2 TB NVMe SSD",
+        "ports": "DP 1.4, HDMI 2.0, 2x USB-A 3.2, 2x USB-A 2.0, USB-C 3.2, Ethernet, Wi-Fi 6E, BT 5.3",
+        "size": "152 x 162.4 x 156 mm (~6\" cube)"
+      },
+      "url": "https://store.steampowered.com/sale/steammachine"
+    },
+    {
+      "name": "Steam Controller (2026)",
+      "available": false,
+      "status": "Coming H1 2026",
+      "isNew": true,
+      "message": "Redesigned controller with magnetic analog sticks (drift-resistant), dual trackpads, gyro controls, haptic feedback. Up to 35 hours battery life. Pairs up to 4 via built-in 2.4 GHz receiver.",
+      "specs": {
+        "battery": "Up to 35 hours",
+        "connectivity": "2.4 GHz wireless / Bluetooth 5.3",
+        "features": "Magnetic sticks, dual trackpads, gyro, haptics"
+      },
+      "url": "https://store.steampowered.com/sale/steammachine"
+    },
+    {
+      "name": "Steam Frame (VR)",
+      "available": false,
+      "status": "Coming H1 2026",
+      "isNew": true,
+      "message": "Standalone VR headset with Snapdragon 8 Gen 3. Dual 2160x2160 LCD displays, pancake lenses, 110° FOV, 72-120Hz (exp. 144Hz). Only 440g total. Supports PC streaming via Steam.",
+      "specs": {
+        "processor": "Snapdragon 8 Gen 3",
+        "displays": "2x 2160x2160 LCD",
+        "lenses": "Pancake lenses",
+        "fov": "110°",
+        "refreshRate": "72-120Hz (144Hz experimental)",
+        "weight": "440g total (185g frontbox)",
+        "tracking": "Inside-out"
+      },
+      "url": "https://store.steampowered.com/sale/steammachine"
+    },
+    {
+      "name": "Steam Deck",
+      "available": true,
+      "status": "Available",
+      "isNew": false,
+      "message": "Steam Deck OLED and LCD models available now on the Steam Store. Portable PC gaming handheld running SteamOS.",
+      "specs": null,
+      "url": "https://store.steampowered.com/steamdeck"
+    }
+  ],
+  "lastUpdated": "2026-03-04"
+}

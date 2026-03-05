@@ -1,0 +1,24 @@
+{
+  "sales": [
+    {
+      "name": "Steam Spring Sale",
+      "start": "2026-03-19T17:00:00Z",
+      "end": "2026-03-26T17:00:00Z"
+    },
+    {
+      "name": "Steam Summer Sale",
+      "start": "2026-06-25T17:00:00Z",
+      "end": "2026-07-09T17:00:00Z"
+    },
+    {
+      "name": "Steam Autumn Sale",
+      "start": "2026-11-25T17:00:00Z",
+      "end": "2026-12-01T17:00:00Z"
+    },
+    {
+      "name": "Steam Winter Sale",
+      "start": "2026-12-22T17:00:00Z",
+      "end": "2027-01-05T17:00:00Z"
+    }
+  ]
+}
