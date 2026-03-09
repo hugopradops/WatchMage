@@ -209,80 +209,90 @@ async function loadSteamSales() {
       return;
     }
 
-    function render() {
-      const sale = data.next;
-      const isActive = data.active;
-      let html = saleVisualHTML();
-      html += `<div class="sale-name">${sale.name}</div>`;
+    const sale = data.next;
+    const isActive = data.active;
 
-      if (isActive) {
-        html += `<div class="sale-active-badge"><span class="sale-active-dot"></span> LIVE NOW</div>`;
-        html += `<div class="sale-status">Ends ${formatDate(sale.end)}</div>`;
-        html += countdownHTML(sale.end);
-        statEl.textContent = `${sale.name} — LIVE!`;
-      } else {
-        html += `<div class="sale-status">Starts ${formatDate(sale.start)}</div>`;
-        html += countdownHTML(sale.start);
-        const t = timeUntil(sale.start);
-        statEl.textContent = t ? `${sale.name} in ${t.days}d` : sale.name;
-      }
-      el.innerHTML = html;
+    // Build the full layout once (static parts + countdown placeholder)
+    let html = saleVisualHTML();
+    html += `<div class="sale-name">${sale.name}</div>`;
+
+    if (isActive) {
+      html += `<div class="sale-active-badge"><span class="sale-active-dot"></span> LIVE NOW</div>`;
+      html += `<div class="sale-status">Ends ${formatDate(sale.end)}</div>`;
+      statEl.textContent = `${sale.name} — LIVE!`;
+    } else {
+      html += `<div class="sale-status">Starts ${formatDate(sale.start)}</div>`;
+      const t = timeUntil(sale.start);
+      statEl.textContent = t ? `${sale.name} in ${t.days}d` : sale.name;
     }
 
-    render();
+    html += `<div id="sale-countdown-wrap"></div>`;
+    el.innerHTML = html;
+
+    // Only update the countdown numbers each second
+    const countdownWrap = document.getElementById('sale-countdown-wrap');
+    const targetDate = isActive ? sale.end : sale.start;
+
+    function tickCountdown() {
+      countdownWrap.innerHTML = countdownHTML(targetDate);
+    }
+
+    tickCountdown();
     clearInterval(saleCountdownInterval);
-    saleCountdownInterval = setInterval(render, 1000);
+    saleCountdownInterval = setInterval(tickCountdown, 1000);
   } catch (err) {
     el.innerHTML = '<div class="error-msg"><span class="error-icon">⚡</span>Failed to load sale data.</div>';
     statEl.textContent = 'Error loading';
   }
 }
 
-// === Fetch & Render: Steam Hardware ===
-async function loadHardware() {
-  const el = document.getElementById('hardware-content');
+// === Fetch & Render: Critic Scores (OpenCritic) ===
+async function loadReviews() {
+  const el = document.getElementById('reviews-content');
+  const countEl = document.getElementById('reviews-count');
   try {
-    const res = await fetch('/api/steam-hardware');
+    const res = await fetch('/api/metacritic');
     const data = await res.json();
 
-    const deviceIcons = {
-      'Steam Deck': '🎮',
-      'Steam Controller (2026)': '🕹️',
-      'Steam Machine': '🖥️',
-      'Steam Frame (VR)': '🥽',
-    };
-
-    function badgeClass(d) {
-      if (d.available) return 'badge-available';
-      if (d.isNew) return 'badge-new';
-      return 'badge-unavailable';
+    // Map score to CSS class (OpenCritic-style tiers)
+    function scoreClass(score) {
+      if (score >= 90) return 'mc-universal';   // Mighty
+      if (score >= 75) return 'mc-generally';   // Strong
+      if (score >= 50) return 'mc-mixed';       // Fair
+      return 'mc-unfavorable';                  // Weak
     }
 
-    function badgeText(d) {
-      if (d.available) return '✓ Available';
-      if (d.isNew) return '⬡ ' + d.status;
-      return '✗ Discontinued';
+    // OpenCritic tier label
+    function tierLabel(tier) {
+      const labels = { 'Mighty': 'Mighty', 'Strong': 'Strong', 'Fair': 'Fair', 'Weak': 'Weak' };
+      return labels[tier] || tier || '';
     }
 
-    el.innerHTML = `<div class="hardware-list">
-      ${data.devices.map(d => `
-        <div class="hardware-item ${d.isNew ? 'hardware-item-new' : ''}">
-          <div class="hardware-icon ${d.available ? 'hardware-icon-available' : d.isNew ? 'hardware-icon-new' : 'hardware-icon-unavailable'}">
-            ${deviceIcons[d.name] || '📦'}
+    if (countEl) countEl.textContent = `${data.games.length} games`;
+
+    el.innerHTML = `<div class="reviews-list">
+      ${data.games.map(g => {
+        const platforms = (g.platforms || []).join(' · ');
+        return `
+        <a href="${g.url}" target="_blank" rel="noopener" class="review-item ${scoreClass(g.score)}">
+          <div class="review-thumb">
+            ${g.image ? `<img src="${g.image}" alt="${g.name}" loading="lazy">` : '<div class="review-thumb-placeholder">?</div>'}
           </div>
-          <div class="hardware-info">
-            <h3>${d.name}${d.isNew ? ' <span class="new-tag">NEW</span>' : ''}</h3>
-            ${d.url ? `<a href="${d.url}" target="_blank" rel="noopener">View on Steam Store</a>` : ''}
+          <div class="review-info">
+            <h3>${g.name}</h3>
+            <div class="review-meta">
+              <span class="review-genres">${platforms}</span>
+            </div>
           </div>
-          <span class="hardware-badge ${badgeClass(d)}">
-            ${badgeText(d)}
-          </span>
-        </div>
-      `).join('')}
-    </div>
-    <div class="hardware-updated">Last updated: ${formatDate(data.lastUpdated)}</div>`;
+          <div class="review-score-wrap">
+            <span class="mc-score ${scoreClass(g.score)}">${g.score}</span>
+            <span class="review-stats">${tierLabel(g.tier)}</span>
+          </div>
+        </a>`;
+      }).join('')}
+    </div>`
   } catch (err) {
-    el.innerHTML = '<div class="error-msg"><span class="error-icon">🔧</span>Failed to load hardware data.</div>';
+    el.innerHTML = '<div class="error-msg"><span class="error-icon">&#11088;</span>Failed to load critic scores.</div>';
   }
 }
 
@@ -308,7 +318,7 @@ async function loadReleases() {
       ${data.games.map(g => {
         const [c1, c2] = stringToColor(g.name);
         return `
-        <div class="release-card">
+        <a href="https://store.steampowered.com/app/${g.appid}" target="_blank" rel="noopener" class="release-card">
           <div class="release-img-wrap">
             ${g.image
               ? `<img class="release-img" src="${g.image}" alt="${g.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'release-img-placeholder\\' style=\\'background:linear-gradient(135deg,${c1},${c2})\\'><span>${g.name.charAt(0)}</span></div>';">`
@@ -322,7 +332,7 @@ async function loadReleases() {
             <div class="release-countdown">${relativeTime(g.released)}</div>
             ${g.genres && g.genres.length ? `<div class="release-genres">${g.genres.join(' · ')}</div>` : ''}
           </div>
-        </div>`;
+        </a>`;
       }).join('')}
     </div>`;
   } catch (err) {
@@ -404,6 +414,6 @@ async function loadNews() {
 
 // === Init ===
 loadSteamSales();
-loadHardware();
+loadReviews();
 loadReleases();
 loadNews();

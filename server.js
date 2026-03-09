@@ -215,17 +215,50 @@ function decodeHTMLEntities(str) {
     .replace(/&reg;/g, '\u00AE');
 }
 
-// --- API: Steam Hardware ---
-app.get('/api/steam-hardware', (req, res) => {
+// --- API: Critic Scores (OpenCritic) ---
+app.get('/api/metacritic', async (req, res) => {
+  const cached = getCached('metacritic', 60 * 60 * 1000); // 1 hour cache
+  if (cached) return res.json(cached);
+
   try {
-    const raw = fs.readFileSync(path.join(__dirname, 'data', 'steam-hardware.json'), 'utf-8');
-    const data = JSON.parse(raw);
-    // Always report today's date as the "last updated" since this is when the user is viewing it
-    data.lastUpdated = new Date().toISOString().split('T')[0];
-    res.json(data);
+    const response = await fetch('https://api.opencritic.com/api/game/popular', {
+      headers: { 'User-Agent': 'MageTrack/1.0' },
+    });
+
+    if (!response.ok) throw new Error(`OpenCritic API returned ${response.status}`);
+    const data = await response.json();
+
+    const games = data
+      .filter(g => g.topCriticScore && g.topCriticScore > 0)
+      .map(g => ({
+        id: g.id,
+        name: g.name,
+        score: Math.round(g.topCriticScore),
+        tier: g.tier || 'N/A',
+        releaseDate: g.firstReleaseDate || null,
+        platforms: (g.Platforms || []).map(p => p.shortName).filter(Boolean),
+        image: g.images && g.images.banner && g.images.banner.og
+          ? `https://img.opencritic.com/${g.images.banner.og}`
+          : g.images && g.images.box && g.images.box.og
+            ? `https://img.opencritic.com/${g.images.box.og}`
+            : null,
+        url: `https://opencritic.com/game/${g.id}/${encodeURIComponent(g.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'))}`,
+      }))
+      .sort((a, b) => b.score - a.score);
+
+    const result = { games };
+    if (games.length > 0) setCache('metacritic', result);
+    res.json(result);
   } catch (err) {
-    console.error('Steam hardware error:', err.message);
-    res.status(500).json({ error: 'Failed to load steam hardware data' });
+    console.error('OpenCritic error:', err.message);
+    // Fallback: try local data if available
+    try {
+      const raw = fs.readFileSync(path.join(__dirname, 'data', 'metacritic.json'), 'utf-8');
+      const fallback = JSON.parse(raw);
+      res.json(fallback);
+    } catch {
+      res.status(500).json({ error: 'Failed to load critic scores' });
+    }
   }
 });
 

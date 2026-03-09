@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MageTrack - Gaming Dashboard</title>
-  <meta name="description" content="Your handy PC gaming tool — track Steam sales, upcoming releases, hardware, and gaming news.">
+  <meta name="description" content="Your handy PC gaming tool — track Steam sales, upcoming releases, Metacritic scores, and gaming news.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧙</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -115,15 +115,16 @@
       </div>
     </section>
 
-    <!-- Steam Hardware -->
-    <section class="card card-hardware" id="hardware-section">
+    <!-- Metacritic Scores -->
+    <section class="card card-reviews" id="reviews-section">
       <div class="card-header">
-        <div class="card-icon-wrap hardware-icon-wrap">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="10" y1="12" x2="10" y2="12"/><line x1="14" y1="10" x2="14" y2="10"/><line x1="18" y1="10" x2="18" y2="10"/><line x1="14" y1="14" x2="14" y2="14"/><line x1="18" y1="14" x2="18" y2="14"/></svg>
+        <div class="card-icon-wrap reviews-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         </div>
-        <h2>Steam Hardware</h2>
+        <h2>Critic Scores</h2>
+        <span class="card-badge" id="reviews-count"></span>
       </div>
-      <div class="card-body card-body-scroll" id="hardware-content">
+      <div class="card-body card-body-scroll" id="reviews-content">
         <div class="skeleton-loader">
           <div class="skeleton skeleton-row"></div>
           <div class="skeleton skeleton-row"></div>
