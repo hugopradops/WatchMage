@@ -30,8 +30,11 @@ function tierLabel(tier: string) {
   return labels[tier] || tier || '';
 }
 
+const GAMES_PER_PAGE = 3;
+
 export default function CriticScoresCard() {
   const [games, setGames] = useState<CriticGame[] | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -71,7 +74,7 @@ export default function CriticScoresCard() {
           </span>
         )}
       </div>
-      <div className="card-body card-body-scroll" id="reviews-content">
+      <div className="card-body" id="reviews-content">
         {error ? (
           <div className="error-msg">
             <span className="error-icon">⭐</span>Failed to load critic scores.
@@ -83,40 +86,60 @@ export default function CriticScoresCard() {
             <div className="skeleton skeleton-row"></div>
           </div>
         ) : (
-          <div className="reviews-list">
-            {games.map((g) => {
-              const cls = scoreClass(g.score);
-              const platforms = (g.platforms || []).join(' · ');
-              return (
-                <a
-                  key={g.id}
-                  href={g.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`review-item ${cls}`}
-                >
-                  <div className="review-thumb">
-                    {g.image ? (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img src={g.image} alt={g.name} loading="lazy" />
-                    ) : (
-                      <div className="review-thumb-placeholder">?</div>
-                    )}
-                  </div>
-                  <div className="review-info">
-                    <h3>{g.name}</h3>
-                    <div className="review-meta">
-                      <span className="review-genres">{platforms}</span>
-                    </div>
-                  </div>
-                  <div className="review-score-wrap">
-                    <span className={`mc-score ${cls}`}>{g.score}</span>
-                    <span className="review-stats">{tierLabel(g.tier)}</span>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
+          <>
+            <div className="reviews-list">
+              {games
+                .slice((currentPage - 1) * GAMES_PER_PAGE, currentPage * GAMES_PER_PAGE)
+                .map((g) => {
+                  const cls = scoreClass(g.score);
+                  const platforms = (g.platforms || []).join(' · ');
+                  return (
+                    <a
+                      key={g.id}
+                      href={g.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`review-item ${cls}`}
+                    >
+                      <div className="review-thumb">
+                        {g.image ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img src={g.image} alt={g.name} loading="lazy" />
+                        ) : (
+                          <div className="review-thumb-placeholder">?</div>
+                        )}
+                      </div>
+                      <div className="review-info">
+                        <h3>{g.name}</h3>
+                        <div className="review-meta">
+                          <span className="review-genres">{platforms}</span>
+                        </div>
+                      </div>
+                      <div className="review-score-wrap">
+                        <span className={`mc-score ${cls}`}>{g.score}</span>
+                        <span className="review-stats">{tierLabel(g.tier)}</span>
+                      </div>
+                    </a>
+                  );
+                })}
+            </div>
+            {games.length > GAMES_PER_PAGE && (
+              <div className="news-pagination">
+                {Array.from(
+                  { length: Math.ceil(games.length / GAMES_PER_PAGE) },
+                  (_, i) => i + 1,
+                ).map((page) => (
+                  <button
+                    key={page}
+                    className={`news-page-btn${page === currentPage ? ' active' : ''}`}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>

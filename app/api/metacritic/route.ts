@@ -62,7 +62,7 @@ export async function GET() {
           )}`,
         }),
       )
-      .sort((a: CriticGame, b: CriticGame) => b.score - a.score);
+      .slice(0, 9);
 
     const result: CriticResult = { games };
     if (games.length > 0) setCache('metacritic', result);

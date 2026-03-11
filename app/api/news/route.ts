@@ -48,7 +48,7 @@ export async function GET() {
   articles.sort(
     (a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime(),
   );
-  const result: NewsResult = { articles: articles.slice(0, 15) };
+  const result: NewsResult = { articles: articles.slice(0, 12) };
   setCache('news', result);
   return NextResponse.json(result);
 }

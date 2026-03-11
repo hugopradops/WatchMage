@@ -9,7 +9,7 @@ interface Article {
   source: string;
 }
 
-const NEWS_PER_PAGE = 5;
+const NEWS_PER_PAGE = 4;
 
 function timeAgo(dateStr: string | null) {
   if (!dateStr) return '';

@@ -1,4 +1,3 @@
-import ParticleCanvas from './components/ParticleCanvas';
 import TopBar from './components/TopBar';
 import SaleCard from './components/SaleCard';
 import ReleasesCard from './components/ReleasesCard';
@@ -8,19 +7,28 @@ import NewsCard from './components/NewsCard';
 export default function Home() {
   return (
     <>
-      <ParticleCanvas />
-
-      <div className="ambient-orb orb-1"></div>
-      <div className="ambient-orb orb-2"></div>
-      <div className="ambient-orb orb-3"></div>
+      {/* Gradient mesh background — pure CSS, no canvas needed */}
+      <div className="bg-mesh" aria-hidden="true">
+        <div className="bg-blob bg-blob-1"></div>
+        <div className="bg-blob bg-blob-2"></div>
+        <div className="bg-blob bg-blob-3"></div>
+      </div>
 
       <TopBar />
 
       <main className="dashboard">
-        <SaleCard />
-        <ReleasesCard />
-        <CriticScoresCard />
-        <NewsCard />
+        <div className="bento-sale">
+          <SaleCard />
+        </div>
+        <div className="bento-releases">
+          <ReleasesCard />
+        </div>
+        <div className="bento-critics">
+          <CriticScoresCard />
+        </div>
+        <div className="bento-news">
+          <NewsCard />
+        </div>
       </main>
     </>
   );
