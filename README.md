@@ -1,4 +1,4 @@
-# MageTrack
+# WatchMage
 
 A mage-themed gaming dashboard that aggregates Steam sales countdowns, upcoming PC game releases, community review scores, and gaming news into a single page.
 
@@ -57,7 +57,7 @@ A mage-themed gaming dashboard that aggregates Steam sales countdowns, upcoming 
 ## Project Structure
 
 ```
-MageTrack/
+WatchMage/
 ├── app/
 │   ├── layout.tsx              # Root layout with fonts and metadata
 │   ├── page.tsx                # Dashboard page composing all components

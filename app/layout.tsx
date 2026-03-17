@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'MageTrack - Gaming Dashboard',
+  title: 'WatchMage - Gaming Dashboard',
   description:
     'Your handy PC gaming tool — track Steam sales, upcoming releases, critic scores, and gaming news.',
 };

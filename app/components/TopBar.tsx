@@ -102,7 +102,7 @@ export default function TopBar() {
       <div className="topbar-left">
         <MageLogo />
         <div className="topbar-brand">
-          <h1 className="topbar-title">MageTrack</h1>
+          <h1 className="topbar-title">WatchMage</h1>
           <p className="topbar-subtitle">Your Handy PC Gaming Tool</p>
         </div>
       </div>

@@ -29,11 +29,11 @@ async function fetchGameData(appId: number): Promise<CriticGame | null> {
     // Fetch app details and user reviews in parallel
     const [detailRes, reviewRes] = await Promise.all([
       fetch(`https://store.steampowered.com/api/appdetails?appids=${appId}`, {
-        headers: { 'User-Agent': 'MageTrack/1.0' },
+        headers: { 'User-Agent': 'WatchMage/1.0' },
       }),
       fetch(
         `https://store.steampowered.com/appreviews/${appId}?json=1&language=all&purchase_type=all&num_per_page=0`,
-        { headers: { 'User-Agent': 'MageTrack/1.0' } },
+        { headers: { 'User-Agent': 'WatchMage/1.0' } },
       ),
     ]);
 
@@ -77,10 +77,10 @@ export async function GET() {
     // Gather app IDs from multiple Steam categories
     const [catRes, featRes] = await Promise.all([
       fetch('https://store.steampowered.com/api/featuredcategories/', {
-        headers: { 'User-Agent': 'MageTrack/1.0' },
+        headers: { 'User-Agent': 'WatchMage/1.0' },
       }),
       fetch('https://store.steampowered.com/api/featured/', {
-        headers: { 'User-Agent': 'MageTrack/1.0' },
+        headers: { 'User-Agent': 'WatchMage/1.0' },
       }),
     ]);
 

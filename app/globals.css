@@ -1,7 +1,7 @@
 /* ============================================================
-   MageTrack V2 — Modern Bento Dashboard
+   WatchMage V2 — Modern Bento Dashboard
    Style: Glass + gradient mesh
-   Palette: Original MageTrack (red/blue/cyan)
+   Palette: Original WatchMage (red/blue/cyan)
    Typography: Outfit (headings) + Inter (body)
    ============================================================ */
 
@@ -9,7 +9,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Palette — Original MageTrack */
+  /* Palette — Original WatchMage */
   --bg: rgb(43, 42, 51);
   --bg-elevated: rgba(66, 65, 77, 0.7);
   --bg-card: rgba(66, 65, 77, 0.5);
