@@ -25,13 +25,13 @@ jobs:
 
       # 1. Check out the repo so the runner has your code
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         # "uses:" runs a reusable action from the GitHub marketplace.
         # actions/checkout clones your repo into the runner's workspace.
 
       # 2. Install Node.js and set up npm caching
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22            # Match the version in your Dockerfile
           cache: npm                  # Caches ~/.npm so future runs skip re-downloading packages

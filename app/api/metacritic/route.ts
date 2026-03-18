@@ -16,7 +16,11 @@ interface CriticResult {
   games: CriticGame[];
 }
 
-function platformList(p: { windows?: boolean; mac?: boolean; linux?: boolean }): string[] {
+function platformList(p: {
+  windows?: boolean;
+  mac?: boolean;
+  linux?: boolean;
+}): string[] {
   const list: string[] = [];
   if (p.windows) list.push('PC');
   if (p.mac) list.push('Mac');
